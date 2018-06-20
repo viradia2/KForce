@@ -21,7 +21,9 @@ public class ZipMainImpl {
 		sortbyColumn(zipRanges, 0);
 		
 		//To Print Sorted Matrix
-		printTheSortedMatrix(zipRanges);
+		/***
+		 * printTheSortedMatrix(zipRanges);
+		 */
 
 		List<ZipCodeRange> normalizedZipRangelist;
 		
