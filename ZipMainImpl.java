@@ -3,23 +3,44 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ZipMainImpl {
+import javax.management.InvalidAttributeValueException;
 
-	static int zipRanges[][] = { { 94133, 94133 }, { 94200, 94299 }, { 94600, 94699 } };
-	static ZipCodeRange zip = null;
+public class ZipMainImpl {
+	
+	/*Different Test Cases*/
+	
+//	private static int zipRanges[][] = { { 94133, 94133 }, { 94200, 94299 }, { 94600, 94699 } };
+//	private static int zipRanges[][] = { { 93133, 94133 }, { 94200, 94299 }, { 94226, 94399 } };
+//	private static int zipRanges[][] = { { 94133, 94133 } };
+	private static int zipRanges[][] = { { 94133, 94133 }, { 22043, 22099 }, { 22042, 22199}, { 94200, 94299 }, { 94226, 94399 } };
+	
+	private static ZipCodeRange zip = null;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//Sorting Array by first column
 		sortbyColumn(zipRanges, 0);
-
+		
+		//To Print Sorted Matrix
 		printTheSortedMatrix(zipRanges);
 
-		List<ZipCodeRange> normalizedZipRangelist = normalizedZipRanges(zipRanges);
+		List<ZipCodeRange> normalizedZipRangelist;
+		
+		try {
+			normalizedZipRangelist = normalizedZipRanges(zipRanges);
+			System.out.println(normalizedZipRangelist);
+		} catch (InvalidAttributeValueException e) {
+			System.out.println("Provided Array is Empty or NULL");
+		}
 
-		System.out.println(normalizedZipRangelist);
 	}
 
-	private static List<ZipCodeRange> normalizedZipRanges(int[][] arr) {
+	private static List<ZipCodeRange> normalizedZipRanges(int[][] arr) throws InvalidAttributeValueException {
+		
+		//if Array is NULL or Empty throwing an Exception
+		if(arr == null || arr.length == 0)
+			throw  new InvalidAttributeValueException() ;
+		
+		//Initializing upperbound and lowerbound 
 		int upperBound = arr[0][0];
 		int lowerBound = arr[0][1];
 
@@ -43,6 +64,7 @@ public class ZipMainImpl {
 					lowerBound = arr[i][j];
 				}
 			}
+			//Set the normalized Zip Range Array
 			normalizedZipRange = setTheNormalizedZip(upperBound, lowerBound, normalizedZipRange);
 		}
 		return normalizedZipRange;
@@ -52,7 +74,8 @@ public class ZipMainImpl {
 		zip = new ZipCodeRange();
 		zip.setLowerBound(lowerBound);
 		zip.setUpperBound(upperBound);
-
+		
+		//Check if upperbound value element is already available check for the correct element and replace it. 
 		if (list.size() > 0 && list.get(list.size() - 1).getUpperBound() == zip.getUpperBound())
 			list.set(list.size() - 1, zip);
 		else
